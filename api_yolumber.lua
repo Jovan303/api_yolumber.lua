@@ -501,3 +501,5 @@ end, function(player)
     imgui.PopStyleColor(7)
     imgui.PopStyleVar(3)
 end)
+
+lua_thread.create(main)
