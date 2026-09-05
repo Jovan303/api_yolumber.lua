@@ -12,12 +12,17 @@ local GTASA = nil
 pcall(function() GTASA = ffi.load('GTASA') end)
 if not GTASA then pcall(function() GTASA = ffi.load('libGTASA.so') end) end
 
-ffi.cdef([[
-    void _Z12AND_OpenLinkPKc(const char* link);
-]])
+-- [ FIX ANDROID CRASH ]: Bungkus pakai pcall biar memori gak jebol pas dieksekusi dari loader
+pcall(function()
+    ffi.cdef([[
+        void _Z12AND_OpenLinkPKc(const char* link);
+    ]])
+end)
 
 local function openLink(url)
-    if GTASA then GTASA._Z12AND_OpenLinkPKc(url) end
+    if GTASA then 
+        pcall(function() GTASA._Z12AND_OpenLinkPKc(url) end) 
+    end
 end
 
 local windowState = imgui.new.bool(false)
